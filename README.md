@@ -22,9 +22,9 @@ Resources/
 libcef_dll/
 ```
 
-* Add environment variable: `QT_HOME`.
+* QT5.5.0 for msvc2013
 
-* Open `qcef3_1650/qcef3_1650.sln`, then build. (VS 2010)
+* Open `qcef3_1650/qcef3_1650.sln`, then build. (VS 2013)
 
 
 Project
