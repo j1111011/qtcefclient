@@ -1,7 +1,7 @@
 
 A simple cef3 client with Qt.
 
-![](https://github.com/joinAero/qtcefclient/blob/master/qcef3_1650.png?raw=true)
+![](https://github.com/j1111011/qtcefclient/blob/master/qcef3_1650.jpg?raw=true)
 
 
 Build
