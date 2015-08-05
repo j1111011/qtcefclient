@@ -2,6 +2,7 @@
 #include <string.h>
 #include "include/cef_app.h"
 #include "include/cef_client.h"
+#include "include/cef_sandbox_win.h"
 #include "cefclient/client_app.h"
 
 #include <QDebug>
@@ -19,7 +20,7 @@ void CefInitSettings(CefSettings& settings) {
   std::string cache_path = AppGetWorkingDirectory().toStdString() + "/.cache";
   CefString(&settings.cache_path) = CefString(cache_path);
   // Completely disable logging.
-  settings.log_severity = LOGSEVERITY_DISABLE;
+  settings.log_severity = LOGSEVERITY_VERBOSE;// LOGSEVERITY_DISABLE;
   // The resources(cef.pak and/or devtools_resources.pak) directory.
   CefString(&settings.resources_dir_path) = CefString();
   // The locales directory.
@@ -33,7 +34,7 @@ void CefInitSettings(CefSettings& settings) {
 }  // namespace
 
 CefRefPtr<ClientHandler> g_handler;
-
+void* sandbox_info;
 int CefInit(int &argc, char **argv) {
   qDebug() << __FUNCTION__;
   HINSTANCE hInstance = (HINSTANCE)GetModuleHandle(NULL);
@@ -55,9 +56,21 @@ int CefInit(int &argc, char **argv) {
   // Specify the path for the sub-process executable.
   CefString(&settings.browser_subprocess_path).FromASCII("cefclient_process.exe");
 #endif
-
+ // CefScopedSandboxInfo scoped_sandbox;
+  sandbox_info = NULL;// scoped_sandbox.sandbox_info();
   // Initialize CEF.
-  CefInitialize(main_args, settings, app.get());
+  WCHAR curDir[MAX_PATH] = { 0 };
+  GetCurrentDirectory(MAX_PATH, curDir);
+  try{
+	CefInitialize(main_args, settings, app.get(), sandbox_info);
+  }
+  catch (std::exception& e){
+	  const char* p = e.what();
+  }
+  catch (...){
+
+  }
+  
 
   g_handler = new ClientHandler();
 

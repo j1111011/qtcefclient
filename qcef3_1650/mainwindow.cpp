@@ -8,14 +8,14 @@
 
 #include <QDebug>
 
-MainWindow::MainWindow(QWidget *parent, Qt::WFlags flags)
+MainWindow::MainWindow(QWidget *parent, Qt::WindowFlags flags)
     : QMainWindow(parent, flags),
       ui_(new Ui::MainWindow) {
   qDebug() << __FUNCTION__;
   ui_->setupUi(this);
   SetupUi();
 
-  webview_->load(QUrl("http://www.google.com/"));
+  webview_->load(QUrl("http://www.baidu.com/"));
 }
 
 MainWindow::~MainWindow() {

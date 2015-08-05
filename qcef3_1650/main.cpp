@@ -30,10 +30,13 @@ BOOL IsWow64() {
 }
 
 int main(int argc, char *argv[]) {
+  char* pp = getenv("PATH");
   QApplication a(argc, argv);
   int result = CefInit(argc, argv);
-  if (result >= 0)
-    return result;
+  if (result >= 0){
+	  printf("%d init error", result);
+	  return 0;
+  }
 
   // Load flash system plug-in on Windows.
   CefLoadPlugins(IsWow64());

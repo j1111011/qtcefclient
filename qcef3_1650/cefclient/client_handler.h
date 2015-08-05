@@ -10,6 +10,7 @@
 #include "include/cef_client.h"
 #include "cefclient/util.h"
 #include "cefclient/message_event.h"
+#include "include/cef_request_handler.h"
 
 // ClientHandler implementation.
 class ClientHandler : public CefClient,
@@ -133,7 +134,7 @@ class ClientHandler : public CefClient,
                            DragOperationsMask mask) OVERRIDE;
 
   // CefGeolocationHandler methods
-  virtual void OnRequestGeolocationPermission(
+  virtual bool OnRequestGeolocationPermission(
       CefRefPtr<CefBrowser> browser,
       const CefString& requesting_url,
       int request_id,
@@ -154,7 +155,7 @@ class ClientHandler : public CefClient,
                              CefWindowInfo& windowInfo,
                              CefRefPtr<CefClient>& client,
                              CefBrowserSettings& settings,
-                             bool* no_javascript_access) OVERRIDE;
+                             bool* no_javascript_access) ;
   virtual void OnAfterCreated(CefRefPtr<CefBrowser> browser) OVERRIDE;
   virtual bool DoClose(CefRefPtr<CefBrowser> browser) OVERRIDE;
   virtual void OnBeforeClose(CefRefPtr<CefBrowser> browser) OVERRIDE;
@@ -183,7 +184,7 @@ class ClientHandler : public CefClient,
   virtual bool OnQuotaRequest(CefRefPtr<CefBrowser> browser,
                               const CefString& origin_url,
                               int64 new_size,
-                              CefRefPtr<CefQuotaCallback> callback) OVERRIDE;
+                              CefRefPtr<CefRequestCallback> callback) OVERRIDE;
   virtual void OnProtocolExecution(CefRefPtr<CefBrowser> browser,
                                    const CefString& url,
                                    bool& allow_os_execution) OVERRIDE;
@@ -262,7 +263,7 @@ class ClientHandler : public CefClient,
   // Include the default reference counting implementation.
   IMPLEMENT_REFCOUNTING(ClientHandler);
   // Include the default locking implementation.
-  IMPLEMENT_LOCKING(ClientHandler);
+  //IMPLEMENT_LOCKING(ClientHandler);
 };
 
 #endif  // CEFCLIENT_CLIENT_HANDLER_H_

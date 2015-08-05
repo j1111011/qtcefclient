@@ -82,7 +82,7 @@ void ClientHandler::OnBeforeContextMenu(
     // Add a "Show DevTools" item to all context menus.
     model->AddItem(CLIENT_ID_SHOW_DEVTOOLS, "&Show DevTools");
 
-    CefString devtools_url = browser->GetHost()->GetDevToolsURL(true);
+	CefString devtools_url;// = browser->GetHost()->GetDevToolsURL(true);
     if (devtools_url.empty() ||
         m_OpenDevToolsURLs.find(devtools_url) != m_OpenDevToolsURLs.end()) {
       // Disable the menu option if DevTools isn't enabled or if a window is
@@ -143,13 +143,14 @@ bool ClientHandler::OnDragEnter(CefRefPtr<CefBrowser> browser,
   return false;
 }
 
-void ClientHandler::OnRequestGeolocationPermission(
+bool ClientHandler::OnRequestGeolocationPermission(
       CefRefPtr<CefBrowser> browser,
       const CefString& requesting_url,
       int request_id,
       CefRefPtr<CefGeolocationCallback> callback) {
   // Allow geolocation access from all websites.
   callback->Continue(true);
+  return true;
 }
 
 
@@ -179,7 +180,7 @@ bool ClientHandler::OnBeforePopup(CefRefPtr<CefBrowser> browser,
 void ClientHandler::OnAfterCreated(CefRefPtr<CefBrowser> browser) {
   REQUIRE_UI_THREAD();
 
-  AutoLock lock_scope(this);
+  //base::AutoLock lock_scope(this);
   if (!m_Browser.get())   {
     // We need to keep the main child window, but not popup windows
     m_Browser = browser;
@@ -203,7 +204,7 @@ bool ClientHandler::DoClose(CefRefPtr<CefBrowser> browser) {
   // process.
   if (m_BrowserId == browser->GetIdentifier()) {
     // Notify the browser that the parent window is about to close.
-    browser->GetHost()->ParentWindowWillClose();
+   // browser->GetHost()->ParentWindowWillClose();
 
     // Set a flag to indicate that the window close should be allowed.
     m_bIsClosing = true;
@@ -323,7 +324,7 @@ CefRefPtr<CefResourceHandler> ClientHandler::GetResourceHandler(
 bool ClientHandler::OnQuotaRequest(CefRefPtr<CefBrowser> browser,
                                    const CefString& origin_url,
                                    int64 new_size,
-                                   CefRefPtr<CefQuotaCallback> callback) {
+                                   CefRefPtr<CefRequestCallback> callback) {
   static const int64 max_size = 1024 * 1024 * 20;  // 20mb.
 
   // Grant the quota request if the size is reasonable.
@@ -371,7 +372,7 @@ void ClientHandler::CloseAllBrowsers(bool force_close) {
 }
 
 void ClientHandler::ShowDevTools(CefRefPtr<CefBrowser> browser) {
-  std::string devtools_url = browser->GetHost()->GetDevToolsURL(true);
+	std::string devtools_url;// = browser->GetHost()->GetDevToolsURL(true);
   if (!devtools_url.empty()) {
     if (m_OpenDevToolsURLs.find(devtools_url) ==
                m_OpenDevToolsURLs.end()) {
