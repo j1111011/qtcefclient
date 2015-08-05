@@ -7,8 +7,8 @@ A simple cef3 client with Qt.
 Build
 -----
 
-* Qt 4.8.5
-* CEF 3.1650.1544
+* QT5.5.0 for msvc2013
+* CEF 3.2357.1281.gd660177
 
 You can download CEF3 here: [CEF3 Builds](http://cefbuilds.com/).
 
@@ -22,7 +22,7 @@ Resources/
 libcef_dll/
 ```
 
-* QT5.5.0 for msvc2013
+* 
 
 * Open `qcef3_1650/qcef3_1650.sln`, then build. (VS 2013)
 
